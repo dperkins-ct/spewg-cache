@@ -6,7 +6,9 @@ A distributed, in-memory cache with support for LRU and time-based eviction, des
 
 - **Distributed caching**: Run multiple cache nodes with replication.
 - **Eviction policies**: Supports both LRU (Least Recently Used) and time-based expiry.
+- **Sharding**: Partitions data across multiple nodes
 - **HTTP API**: Simple, language-agnostic interface for cache operations and replication.
+
 
 ## Why HTTP?
 
@@ -25,6 +27,17 @@ HTTP is chosen as the communication protocol for its ubiquity, ease of integrati
 - Each cache entry can have a TTL (time-to-live).
 - Entries are automatically removed after their TTL expires, regardless of access frequency.
 - Useful for caching data that becomes stale after a certain period.
+
+## Sharding
+Sharding is a fundamental technic that is used to partition data across multiple nodeas, ensuring scalability and performance. Sharding offers the following benefits
+    - Horizontal Scalaing: Allows you to scale horizontally by adding more nodes to your system. This enables the cache to handle larger datasets and higher request volumes without degrading performance
+    - Load Distribution
+    - Parallel Processing: multiple shards can process requests in parallel
+    - Isolation of Failures: if one shard fails, others can continue to operate
+    - Simplified management
+
+### Hash-based Sharding
+This cache uses hash-based sharding, where a hash based function is applied ot the shard key to determine the shard. This ensures a uniform distribution of data across shards. 
 
 ## Example: Running Multiple Caches with Replication
 

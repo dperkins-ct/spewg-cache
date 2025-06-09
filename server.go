@@ -1,4 +1,4 @@
-package main
+package spewg
 
 import (
 	"bytes"
@@ -12,9 +12,11 @@ import (
 const replicationHeader = "X-Replication"
 
 type CacheServer struct {
-	cache *Cache
-	peers []string
-	mu    sync.Mutex
+	cache    *Cache
+	peers    []string
+	hashRing *HashRing
+	selfID   string
+	mu       sync.Mutex
 }
 
 func NewCacheServer(peers []string) *CacheServer {
