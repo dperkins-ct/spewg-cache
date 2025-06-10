@@ -39,6 +39,9 @@ Sharding is a fundamental technic that is used to partition data across multiple
 ### Hash-based Sharding
 This cache uses hash-based sharding, where a hash based function is applied ot the shard key to determine the shard. This ensures a uniform distribution of data across shards. 
 
+The hash ring provides a consistent way to map keys to nodes, even as the system scales. Consistent hashing minimizes disruptions caused by adding or removing nodes. The implementation in the patch focuses on simplicity.
+
+
 ## Example: Running Multiple Caches with Replication
 
 Suppose you want to run three cache nodes on the same machine, each replicating to the others.
@@ -46,13 +49,11 @@ Suppose you want to run three cache nodes on the same machine, each replicating 
 ### Start three cache nodes
 
 ```sh
-# Node 1
-go run cache.go server.go  main.go -port=:8080 -peers=http://localhost:8081,http://localhost:8082
+# Run the first instance
+go run main.go -port=:8083 -peers=http://localhost:8080
 
-# Node 2
-go run cache.go server.go  main.go -port=:8081 -peers=http://localhost:8080,http://localhost:8082
-# Node 3
-go run cache.go server.go  main.go -port=:8082 -peers=http://localhost:8081,http://localhost:8080
+# Run the second instance
+go run main.go -port=:8080 -peers=http://localhost:8083
 ```
 
 Each node will replicate cache updates to its peers.
@@ -69,7 +70,11 @@ curl -X POST -H "Content-Type: application/json" -d '{"key": "foo", "value": "ba
 
 ```sh
 curl -i "http://localhost:8081/get?key=foo"
+# OR
+curl -i "http://localhost:8083/get?key=foo"
 ```
+
+Depdending on how `foo` hashes, the value should be returned from either port 8080 or 8083. To test the hashing and key distribution, you can set multiple keys. 
 
 ### Confirm valid replication in logs
 You should see log message in the requested server (in this case port 8080) that the input was successsfully replicated. Example:
@@ -85,6 +90,19 @@ If you set a maximum cache size (e.g., `--max-size 1000`), the cache will evict 
 - **Simplicity**: HTTP API is easy to use and debug.
 - **Flexibility**: Choose eviction strategy per use case.
 
+## Further Enhancements
+- **Optimization**
+    - Cache replacement algorithms: these algorithms can offer improved hit rates and better adaptability to varying workloads compared to the traditional LRU algorithm. Examples include Low Inter-Reference Recency Set (LIRS) or Adaptive Replacement Cache (ARC)
+    - Tuning eviction policies: fine tune the TTL values and LRU threshholds based on access patterns. This prevents premature eviction of valueable data.
+    - Compression: Implement data compression techniques to reduce memory footprint of cached items.
+    - Connection Pooling: optimize network communication by implementing connection pooling between cache clients and servers. This reduces overhead for establishing new connections for each request. Leading to faster response times
+- **Metrics and Monitoring**
+    - Key metrics: continuously monitor essential metrics such as cache hit rate, cache miss rate, eviction rate, latency, throughput and memory usage. Thses metrics provide valuable isights into the performance and may identify potential bottlenecks
+    - Visualization: Use visualization tools such as Grafana to create dashboards that display metrics in real time. 
+    - Alerting: set up alerts based on threshlds for critical metrics. For example, receive an alert if the hit rate drops below a certain percentage
+- **Profiling**
+    - CPU Profiling: Identify CPU intensive functions and pinpoint areas where optimization can yield performance gains
+    - Memory Profiling: Analyze memory usage patterns to detect memory leaks or inefficient memory allocation. 
 ---
 
 _See source code and CLI help for more options and details._
