@@ -1,4 +1,4 @@
-package main
+package spewg
 
 import (
 	"container/list"

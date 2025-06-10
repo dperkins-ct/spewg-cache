@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math/rand"
 	"net/http"
+	"spewg-cache"
 	"strings"
 )
 
@@ -15,9 +17,10 @@ func main() {
 	flag.StringVar(&peers, "peers", "", "comma-separated list of addresses")
 	flag.Parse()
 
+	nodeID := fmt.Sprintf("%s%d", "node", rand.Intn(100))
 	peerList := strings.Split(peers, ",")
 
-	cs := NewCacheServer(peerList)
+	cs := spewg.NewCacheServer(peerList, nodeID)
 	http.HandleFunc("/set", cs.SetHandler)
 	http.HandleFunc("/get", cs.GetHandler)
 	err := http.ListenAndServe(port, nil)
