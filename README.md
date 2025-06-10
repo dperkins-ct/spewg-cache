@@ -103,6 +103,8 @@ If you set a maximum cache size (e.g., `--max-size 1000`), the cache will evict 
 - **Profiling**
     - CPU Profiling: Identify CPU intensive functions and pinpoint areas where optimization can yield performance gains
     - Memory Profiling: Analyze memory usage patterns to detect memory leaks or inefficient memory allocation. 
+- **Testing and Automation**
+    - Add automated unit testing within the pipeline to automatically test changes to the cache to ensure functionality and maintainability
 ---
 
 _See source code and CLI help for more options and details._
