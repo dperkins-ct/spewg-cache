@@ -156,7 +156,7 @@ func (cs *CacheServer) forwardRequest(w http.ResponseWriter, targetNode Node, r 
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Printf("Failed to foward request to node %s: %v", targetNode.Addr, err)
+		log.Printf("Failed to forward request to node %s: %v", targetNode.Addr, err)
 		http.Error(w, "Failed to forward request", http.StatusInternalServerError)
 		return
 	}

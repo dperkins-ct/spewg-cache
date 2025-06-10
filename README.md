@@ -29,15 +29,15 @@ HTTP is chosen as the communication protocol for its ubiquity, ease of integrati
 - Useful for caching data that becomes stale after a certain period.
 
 ## Sharding
-Sharding is a fundamental technic that is used to partition data across multiple nodeas, ensuring scalability and performance. Sharding offers the following benefits
-    - Horizontal Scalaing: Allows you to scale horizontally by adding more nodes to your system. This enables the cache to handle larger datasets and higher request volumes without degrading performance
+Sharding is a fundamental technique that is used to partition data across multiple nodes, ensuring scalability and performance. Sharding offers the following benefits
+    - Horizontal Scaling: Allows you to scale horizontally by adding more nodes to your system. This enables the cache to handle larger datasets and higher request volumes without degrading performance
     - Load Distribution
     - Parallel Processing: multiple shards can process requests in parallel
     - Isolation of Failures: if one shard fails, others can continue to operate
     - Simplified management
 
 ### Hash-based Sharding
-This cache uses hash-based sharding, where a hash based function is applied ot the shard key to determine the shard. This ensures a uniform distribution of data across shards. 
+This cache uses hash-based sharding, where a hash based function is applied to the shard key to determine the shard. This ensures a uniform distribution of data across shards. 
 
 The hash ring provides a consistent way to map keys to nodes, even as the system scales. Consistent hashing minimizes disruptions caused by adding or removing nodes. The implementation in the patch focuses on simplicity.
 
@@ -93,13 +93,13 @@ If you set a maximum cache size (e.g., `--max-size 1000`), the cache will evict 
 ## Further Enhancements
 - **Optimization**
     - Cache replacement algorithms: these algorithms can offer improved hit rates and better adaptability to varying workloads compared to the traditional LRU algorithm. Examples include Low Inter-Reference Recency Set (LIRS) or Adaptive Replacement Cache (ARC)
-    - Tuning eviction policies: fine tune the TTL values and LRU threshholds based on access patterns. This prevents premature eviction of valueable data.
+    - Tuning eviction policies: fine tune the TTL values and LRU thresholds based on access patterns. This prevents premature eviction of valuable data.
     - Compression: Implement data compression techniques to reduce memory footprint of cached items.
     - Connection Pooling: optimize network communication by implementing connection pooling between cache clients and servers. This reduces overhead for establishing new connections for each request. Leading to faster response times
 - **Metrics and Monitoring**
-    - Key metrics: continuously monitor essential metrics such as cache hit rate, cache miss rate, eviction rate, latency, throughput and memory usage. Thses metrics provide valuable isights into the performance and may identify potential bottlenecks
+    - Key metrics: continuously monitor essential metrics such as cache hit rate, cache miss rate, eviction rate, latency, throughput and memory usage. These metrics provide valuable insights into the performance and may identify potential bottlenecks
     - Visualization: Use visualization tools such as Grafana to create dashboards that display metrics in real time. 
-    - Alerting: set up alerts based on threshlds for critical metrics. For example, receive an alert if the hit rate drops below a certain percentage
+    - Alerting: set up alerts based on thresholds for critical metrics. For example, receive an alert if the hit rate drops below a certain percentage
 - **Profiling**
     - CPU Profiling: Identify CPU intensive functions and pinpoint areas where optimization can yield performance gains
     - Memory Profiling: Analyze memory usage patterns to detect memory leaks or inefficient memory allocation. 
